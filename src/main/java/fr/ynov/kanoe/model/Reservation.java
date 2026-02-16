@@ -4,6 +4,7 @@ import main.java.fr.ynov.kanoe.enums.StatusReservation;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 public class Reservation {
@@ -13,7 +14,7 @@ public class Reservation {
     private int nombrePassager;
     private double prixTotale;
     private StatusReservation statut;
-    //private List<Passager> passagers;
+    private List<Passenger> passengerList;
 
     // Constructeur
     public Reservation(int nombrePassager, double prixTotale) {
