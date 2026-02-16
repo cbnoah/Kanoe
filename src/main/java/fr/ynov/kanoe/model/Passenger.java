@@ -56,7 +56,7 @@ public class Passenger {
     if (notification == null) {
         throw new IllegalArgumentException("La notification ne peut pas être nulle");
     }
-    System.out.println("Notification pour " + prenom + " " + nom + ": " + notification.getMessage());
+    System.out.println("Notification pour " + prenom + " " + nom + ": " + notification);
 }   
 
         @Override
