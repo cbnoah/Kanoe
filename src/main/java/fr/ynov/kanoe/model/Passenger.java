@@ -1,72 +1,70 @@
 package main.java.fr.ynov.kanoe.model;
-
 import java.time.LocalDate;
-
 import javax.management.Notification;
 
 public class Passenger {
-    protected String nom;
-    protected String prenom;
-    protected LocalDate dateNaissance;
-    protected String numeroPasseport;
-    protected String numeroSiege;
+    protected String lastName;
+    protected String firstName;
+    protected LocalDate bornDate;
+    protected String passportNumber;
+    protected String seatNumber;
 
-    public Passenger(String nom, String prenom, LocalDate dateNaissance, String numeroPasseport, String numeroSiege) {
-        if (nom == null || nom.trim().isEmpty()) {
-        throw new IllegalArgumentException("Le nom ne peut pas être vide");
+    public Passenger(String lastName, String firstName, LocalDate bornDate, String passportNumber, String seatNumber) {
+        if (lastName == null || lastName.trim().isEmpty()) {
+        throw new IllegalArgumentException("The last name cannot be empty");
     }
-    if (prenom == null || prenom.trim().isEmpty()) {
-        throw new IllegalArgumentException("Le prénom ne peut pas être vide");
+    if (firstName == null || firstName.trim().isEmpty()) {
+        throw new IllegalArgumentException("The first name cannot be empty");
     }
-    if (dateNaissance == null) {
-        throw new IllegalArgumentException("La date de naissance ne peut pas être nulle");
+    if (bornDate == null) {
+        throw new IllegalArgumentException("The birth date cannot be null");
     }
-    if (dateNaissance.isAfter(LocalDate.now())) {
-        throw new IllegalArgumentException("La date de naissance ne peut pas être dans le futur");
+    if (bornDate.isAfter(LocalDate.now())) {
+        throw new IllegalArgumentException("The birth date cannot be in the future");
     }
-    if (numeroPasseport == null || numeroPasseport.trim().isEmpty()) {
-        throw new IllegalArgumentException("Le numéro de passeport ne peut pas être vide");
+    if (passportNumber == null || passportNumber.trim().isEmpty()) {
+        throw new IllegalArgumentException("The passport number cannot be empty");
     }
     
-        this.nom = nom;
-        this.prenom = prenom;
-        this.dateNaissance = dateNaissance;
-        this.numeroPasseport = numeroPasseport;
-        this.numeroSiege = numeroSiege;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.bornDate = bornDate;
+        this.passportNumber = passportNumber;
+        this.seatNumber = seatNumber;
     }
 
-    public String getNomComplet() {
-        return prenom + " " + nom;
+    public String getFullName() {
+        return firstName + " " + lastName ;
     }
 
-    public LocalDate getDateNaissance() {
-        return dateNaissance;
+    public LocalDate getBornDate() {
+        return bornDate;
     }
 
-    public String getNumeroPasseport() {
-        return numeroPasseport;
+    public String getPasseportNumber() {
+        return passportNumber;
     }
 
-    public String getNumeroSiege() {
-        return numeroSiege;
+    public String getSeatNumber() {
+        return seatNumber;
     }
 
 
     public void notification(Notification notification) {
     if (notification == null) {
-        throw new IllegalArgumentException("La notification ne peut pas être nulle");
+        throw new IllegalArgumentException("The notification cannot be null");
     }
-    System.out.println("Notification pour " + prenom + " " + nom + ": " + notification);
+    System.out.println("Notification for " + firstName + " " + lastName + ": " + notification);
 }   
 
         @Override
     public String toString() {
         return "Passenger{" +
-                "nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", dateNaissance=" + dateNaissance +
-                ", numeroPasseport='" + numeroPasseport + '\'' +
-                ", numeroSiege='" + numeroSiege + '\'' +
+                "lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", bornDate=" + bornDate +
+                ", passportNumber='" + passportNumber + '\'' +
+                ", seatNumber='" + seatNumber + '\'' +
                 '}';
     }
 }   

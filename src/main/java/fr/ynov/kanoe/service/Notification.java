@@ -1,28 +1,28 @@
 package main.java.fr.ynov.kanoe.service;
 
 public class Notification {
-    private String titre;
+    private String title;
     private String description;
     private String scope;
     
-    public Notification(String titre, String description, String scope) {
-        if (titre == null || titre.trim().isEmpty()) {
-            throw new IllegalArgumentException("Le titre ne peut pas être vide");
+    public Notification(String title, String description, String scope) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("The title cannot be empty");
         }
         if (description == null || description.trim().isEmpty()) {
-            throw new IllegalArgumentException("La description ne peut pas être vide");
+            throw new IllegalArgumentException("The description cannot be empty");
         }
         if (scope == null || scope.trim().isEmpty()) {
-            throw new IllegalArgumentException("Le scope ne peut pas être vide");
+            throw new IllegalArgumentException("The scope cannot be empty");
         }
 
-        this.titre = titre;
+        this.title = title;
         this.description = description;
         this.scope = scope;
     }
 
-        public String getTitre() {
-        return titre;
+        public String getTitle() {
+        return title;
     }
 
     public String getDescription() {
@@ -35,6 +35,6 @@ public class Notification {
 
     @Override
     public String toString() {
-        return "[" + scope + "] " + titre + ": " + description;
+        return "[" + scope + "] " + title + ": " + description;
     }
 }
