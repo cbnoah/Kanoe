@@ -1,11 +1,11 @@
 package main.java.fr.ynov.kanoe.model;
 public class Users {
-    private String nom;
-    private String prenom;
-    private String email;
-    private String telephone;
-    private String motDePasse;
-    private int id;
+    protected String nom;
+    protected String prenom;
+    protected String email;
+    protected String telephone;
+    protected String motDePasse;
+    protected int id;
     
     public Users(String nom, String prenom, String email, String telephone, String motDePasse, int id) {
         this.nom = nom;
