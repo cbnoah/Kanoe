@@ -1,16 +1,16 @@
 package main.java.fr.ynov.kanoe.service;
 
 import main.java.fr.ynov.kanoe.enums.TypeBillet;
-import main.java.fr.ynov.kanoe.service.Notification;
 import main.java.fr.ynov.kanoe.model.Reservation;
 import main.java.fr.ynov.kanoe.model.Transport;
 import main.java.fr.ynov.kanoe.model.Users;
+import main.java.fr.ynov.kanoe.observer.NotificationManager;
+import main.java.fr.ynov.kanoe.observer.Observer;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 public class SystemeReservation {
 
@@ -18,16 +18,29 @@ public class SystemeReservation {
     private List<Reservation> reservations;
     private List<Users> utilisateurs;
 
+    // ✅ Ajout du NotificationManager
+    private NotificationManager notificationManager;
+
     public SystemeReservation() {
         this.transportsDisponibles = new ArrayList<>();
         this.reservations = new ArrayList<>();
         this.utilisateurs = new ArrayList<>();
+        this.notificationManager = new NotificationManager(); // ✅ Initialisation
+    }
+
+    // ✅ Méthodes pour gérer les abonnements depuis l'extérieur
+    public void addObserver(Observer observer) {
+        notificationManager.addObserver(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        notificationManager.removeObserver(observer);
     }
 
 
     public List<Transport> rechercherTransports(String origine, String destination, LocalDateTime dateDepart) {
-        System.out.println("\n🔍 Recherche de transports de " + origine + " à " + destination +
-                          " le " + dateDepart.toLocalDate());
+        System.out.println("\n🔍 Search transport from " + origine + " to " + destination +
+                          " on " + dateDepart.toLocalDate());
 
         List<Transport> resultats = transportsDisponibles.stream()
                 .filter(t -> t.getStatingPoint().equalsIgnoreCase(origine))
@@ -36,41 +49,38 @@ public class SystemeReservation {
                 .filter(t -> t.getAvailableSeats() > 0)
                 .collect(Collectors.toList());
 
-        System.out.println("✅ " + resultats.size() + " transport(s) trouvé(s)");
+        System.out.println("✅ " + resultats.size() + " transport(s) found:");
         return resultats;
     }
 
 
     public Reservation creerReservation(Users utilisateur, Transport transport, int nombrePassagers, TypeBillet typeBillet) {
 
-
-
         if (!utilisateurs.contains(utilisateur)) {
-            System.out.println("❌ Utilisateur non enregistré dans le système");
+            System.out.println("❌ User not registered in the system");
             return null;
         }
 
-        // Calcul du prix selon le type de billet
         double prixBase = transport.getBasePrice() * nombrePassagers;
         double prixTotal = calculerPrixAvecTypeBillet(prixBase, typeBillet);
 
-        // Créer la réservation
         Reservation reservation = new Reservation(nombrePassagers, prixTotal);
         reservations.add(reservation);
 
+        // ✅ Notification de confirmation de réservation
+        Notification notifReservation = new Notification(
+            "RReservation confirmed",
+            "Your reservation " + reservation.getNumeroReservation() +
+            " for " + transport.getStatingPoint() + " → " + transport.getEndPoint() +
+            " has been successfully created. Total price: " + prixTotal + "€",
+            "CONFIRMATION"
+        );
+        notificationManager.notifyObserver(utilisateur, notifReservation); // ✅ Notifie uniquement cet utilisateur
 
-        // Envoi d'une notification
-        String message = "Votre réservation " + reservation.getNumeroReservation() +
-                        " pour " + transport.getStatingPoint() + " → " + transport.getEndPoint() +
-                        " a été créée avec succès. Prix total: " + prixTotal + "€";
-
-        System.out.println("✅ Réservation créée : " + reservation.getNumeroReservation());
+        System.out.println("✅ RReservation created: " + reservation.getNumeroReservation());
         return reservation;
     }
 
-    /**
-     * Calcule le prix en fonction du type de billet
-     */
 
     private double calculerPrixAvecTypeBillet(double prixBase, TypeBillet typeBillet) {
         switch (typeBillet) {
@@ -85,49 +95,52 @@ public class SystemeReservation {
         }
     }
 
-    /**
-     * Ajoute un transport au système
-     * @param transport Le transport à ajouter
-     */
+
     public void ajouterTransport(Transport transport) {
         if (transport == null) {
-            System.out.println("❌ Le transport ne peut pas être null");
+            System.out.println("❌ The transport cannot be null");
             return;
         }
 
         transportsDisponibles.add(transport);
-        System.out.println("✅ Transport ajouté : " + transport.getStatingPoint() + " → " +
+        System.out.println("✅ Transport added: " + transport.getStatingPoint() + " → " +
                           transport.getEndPoint() + " (" + transport.getClass().getSimpleName() + ")");
     }
 
 
     public void enregistrerUtilisateur(Users utilisateur) {
         if (utilisateur == null) {
-            System.out.println("❌ L'utilisateur ne peut pas être null");
+            System.out.println("❌ The user cannot be null");
             return;
         }
 
-        // Vérifier si l'email existe déjà
         boolean emailExiste = utilisateurs.stream()
                 .anyMatch(u -> u.getEmail().equalsIgnoreCase(utilisateur.getEmail()));
 
         if (emailExiste) {
-            System.out.println("❌ Un utilisateur avec cet email existe déjà");
+            System.out.println("❌ A user with this email already exists");
             return;
         }
 
         utilisateurs.add(utilisateur);
-        System.out.println("✅ Utilisateur enregistré : " + utilisateur.getPrenom() + " " + utilisateur.getNom() +
-                          " (" + utilisateur.getEmail() + ")");
 
-        // Notification de bienvenue
-        String message = "Bienvenue " + utilisateur.getPrenom() + "! Votre compte a été créé avec succès.";
+        // ✅ Abonnement automatique de l'utilisateur aux notifications
+        notificationManager.addObserver(utilisateur);
+
+        // ✅ Welcome notification
+        Notification notifBienvenue = new Notification(
+            "Welcome to Kanoe!",
+            "Welcome " + utilisateur.getFirstName() + "! Your account has been successfully created.",
+            "INFO"
+        );
+        notificationManager.notifyObserver(utilisateur, notifBienvenue);
+
+        System.out.println("✅ User registered: " + utilisateur.getFirstName() + " " + utilisateur.getLastName() +
+                          " (" + utilisateur.getEmail() + ")");
     }
 
 
-
-
-    // Getters pour accéder aux listes
+    // Getters
     public List<Transport> getTransportsDisponibles() {
         return new ArrayList<>(transportsDisponibles);
     }
@@ -141,15 +154,13 @@ public class SystemeReservation {
     }
 
 
-
     public void afficherResume() {
         System.out.println("\n═══════════════════════════════════════════");
-        System.out.println("       RÉSUMÉ DU SYSTÈME DE RÉSERVATION");
+        System.out.println("       SYSTEM RESERVATION SUMMARY");
         System.out.println("═══════════════════════════════════════════");
-        System.out.println("📍 Transports disponibles : " + transportsDisponibles.size());
-        System.out.println("📋 Réservations actives   : " + reservations.size());
-        System.out.println("👥 Utilisateurs inscrits  : " + utilisateurs.size());
+        System.out.println("📍 Available transports : " + transportsDisponibles.size());
+        System.out.println("📋 Active reservations   : " + reservations.size());
+        System.out.println("👥 Registered users  : " + utilisateurs.size());
         System.out.println("═══════════════════════════════════════════\n");
     }
 }
-
