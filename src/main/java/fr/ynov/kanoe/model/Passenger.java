@@ -5,22 +5,18 @@ import javax.management.Notification;
 public class Passenger {
     protected String lastName;
     protected String firstName;
-    protected LocalDate bornDate;
+    protected int age;
     protected String passportNumber;
-    protected String seatNumber;
 
-    public Passenger(String lastName, String firstName, LocalDate bornDate, String passportNumber, String seatNumber) {
+    public Passenger(String lastName, String firstName, int age, String passportNumber) {
         if (lastName == null || lastName.trim().isEmpty()) {
         throw new IllegalArgumentException("The last name cannot be empty");
     }
     if (firstName == null || firstName.trim().isEmpty()) {
         throw new IllegalArgumentException("The first name cannot be empty");
     }
-    if (bornDate == null) {
+    if (age == 0) {
         throw new IllegalArgumentException("The birth date cannot be null");
-    }
-    if (bornDate.isAfter(LocalDate.now())) {
-        throw new IllegalArgumentException("The birth date cannot be in the future");
     }
     if (passportNumber == null || passportNumber.trim().isEmpty()) {
         throw new IllegalArgumentException("The passport number cannot be empty");
@@ -28,25 +24,20 @@ public class Passenger {
     
         this.lastName = lastName;
         this.firstName = firstName;
-        this.bornDate = bornDate;
+        this.age = age;
         this.passportNumber = passportNumber;
-        this.seatNumber = seatNumber;
     }
 
     public String getFullName() {
         return firstName + " " + lastName ;
     }
 
-    public LocalDate getBornDate() {
-        return bornDate;
+    public int getBornDate() {
+        return age;
     }
 
     public String getPasseportNumber() {
         return passportNumber;
-    }
-
-    public String getSeatNumber() {
-        return seatNumber;
     }
 
 
@@ -62,9 +53,8 @@ public class Passenger {
         return "Passenger{" +
                 "lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
-                ", bornDate=" + bornDate +
+                ", age=" + age +
                 ", passportNumber='" + passportNumber + '\'' +
-                ", seatNumber='" + seatNumber + '\'' +
                 '}';
     }
 }   
