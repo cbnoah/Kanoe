@@ -7,7 +7,7 @@ public class Avion extends Transport {
     private final boolean inFlightEntertainment;
 
     public Avion(Builder builder) {
-        super(builder.id, builder.opertator, builder.statingPoint, builder.endPoint,
+        super(builder.id, builder.operator, builder.statingPoint, builder.endPoint,
                 builder.timeDepart, builder.timeArriving, builder.capacity, builder.basePrice);
         this.planeNumber = builder.planeNumber;
         this.inFlightEntertainment = builder.inFlightEntertainment;
@@ -28,7 +28,7 @@ public class Avion extends Transport {
 
     public static class Builder {
         private String id;
-        private String opertator;
+        private String operator;
         private String statingPoint;
         private String endPoint;
         private LocalDateTime timeDepart;
@@ -43,8 +43,8 @@ public class Avion extends Transport {
             return this;
         }
 
-        public Builder setOpertator(String opertator) {
-            this.opertator = opertator;
+        public Builder setOperator(String operator) {
+            this.operator = operator;
             return this;
         }
 
@@ -83,13 +83,13 @@ public class Avion extends Transport {
             return this;
         }
 
-        public Builder setInFlightEntertainment(String terminal) {
+        public Builder setInFlightEntertainment(boolean inFlightEntertainment) {
             this.inFlightEntertainment = inFlightEntertainment;
             return this;
         }
 
         public Avion build() {
-            if (id == null || opertator == null) {
+            if (id == null || operator == null) {
                 throw new IllegalStateException("ID et compagnie sont obligatoires");
             }
             return new Avion(this);

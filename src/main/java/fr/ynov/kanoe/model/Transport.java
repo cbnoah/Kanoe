@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 public abstract class Transport {
     private final String id;
 
-    public String getOpertator() {
-        return opertator;
+    public String getOperator() {
+        return operator;
     }
 
     public String getStatingPoint() {
@@ -33,7 +33,7 @@ public abstract class Transport {
         return availableSeats;
     }
 
-    private String opertator;
+    private String operator;
     private String statingPoint;
     private String endPoint;
     private LocalDateTime timeDepart;
@@ -43,11 +43,11 @@ public abstract class Transport {
     private double basePrice;
 
 
-    public Transport(String id, String opertator, String statingPoint, String endPoint,
+    public Transport(String id, String operator, String statingPoint, String endPoint,
                      LocalDateTime timeDepart, LocalDateTime timeArriving,
                      int capacity, double basePrice) {
         this.id = id;
-        this.opertator = opertator;
+        this.operator = operator;
         this.statingPoint = statingPoint;
         this.endPoint = endPoint;
         this.timeDepart = timeDepart;
@@ -82,5 +82,13 @@ public abstract class Transport {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s: %s -> %s, Depart: %s, Arrive: %s, Price: %.2f, Available Seats: %d",
+                getTypeTransport(), id, statingPoint, endPoint,
+                timeDepart.toString(), timeArriving.toString(),
+                basePrice, availableSeats);
     }
 }

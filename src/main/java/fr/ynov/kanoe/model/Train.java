@@ -8,7 +8,7 @@ public class Train extends Transport {
     private final boolean hasDiningCar;
 
     public Train(Builder builder) {
-        super(builder.id, builder.opertator, builder.statingPoint, builder.endPoint,
+        super(builder.id, builder.operator, builder.statingPoint, builder.endPoint,
                 builder.timeDepart, builder.timeArriving, builder.capacity, builder.basePrice);
         this.trainNumber = builder.trainNumber;
         this.hasWifi = builder.hasWifi;
@@ -34,7 +34,7 @@ public class Train extends Transport {
 
     public static class Builder {
         private String id;
-        private String opertator;
+        private String operator;
         private String statingPoint;
         private String endPoint;
         private LocalDateTime timeDepart;
@@ -50,8 +50,8 @@ public class Train extends Transport {
             return this;
         }
 
-        public Builder setOpertator(String opertator) {
-            this.opertator = opertator;
+        public Builder setOperator(String operator) {
+            this.operator = operator;
             return this;
         }
 
@@ -102,7 +102,7 @@ public class Train extends Transport {
 
         public Train build() {
             // Validation si nécessaire
-            if (id == null || opertator == null) {
+            if (id == null || operator == null) {
                 throw new IllegalStateException("ID and Operator must be provided");
             }
             return new Train(this);
