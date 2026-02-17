@@ -1,53 +1,62 @@
 package main.java.fr.ynov.kanoe.model;
-public class Users {
-    protected String nom;
-    protected String prenom;
+import main.java.fr.ynov.kanoe.observer.Observer;
+import main.java.fr.ynov.kanoe.service.Notification;
+public class Users implements Observer {
+    protected String lastName;
+    protected String firstName;
     protected String email;
-    protected String telephone;
-    protected String motDePasse;
+    protected String phone;
+    protected String password;
     protected int id;
     
-    public Users(String nom, String prenom, String email, String telephone, String motDePasse, int id) {
-        this.nom = nom;
-        this.prenom = prenom;
+    public Users(String lastName, String firstName, String email, String phone, String password, int id) {
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.email = email;
-        this.telephone = telephone;
-        this.motDePasse = motDePasse;
+        this.phone = phone;
+        this.password = password;
         this.id = id;
     }
 
     
-    public String getNom() {
-        return nom;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getPrenom() {
-        return prenom;
+    public String getFirstName() {
+        return firstName;
     }
     
     public String getEmail() {
         return email;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public String getPhone() {
+        return phone;
     }
 
     public int getId() {
         return id;
     }
     
-    public boolean verifierMotDePasse(String motDePasse) {
-        return this.motDePasse.equals(motDePasse);
+    public boolean verifyPassword(String password) {
+        return this.password.equals(password);
     }
     
     
     @Override
     public String toString() {
-        return "Utilisateur{" +
-                "nom='" + nom + '\'' +
+        return "User{" +
+                "lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", email='" + email + '\'' +
                 ", id=" + id +
                 '}';
     }
+
+        @Override
+    public void receiveNotification(Notification notification) {
+        System.out.println("Notification for " + firstName + " " + lastName + ": " + notification);
+    }
+
 }

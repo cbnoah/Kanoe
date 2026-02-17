@@ -6,6 +6,7 @@ public class Notification {
     private String scope;
     
     public Notification(String title, String description, String scope) {
+        
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("The title cannot be empty");
         }
