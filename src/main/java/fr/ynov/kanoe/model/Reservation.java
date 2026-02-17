@@ -17,12 +17,13 @@ public class Reservation {
     private List<Passenger> passengerList;
 
     // Constructeur
-    public Reservation(int nombrePassager, double prixTotale) {
+    public Reservation(int nombrePassager, double prixTotale, List<Passenger> passengerList) {
         this.numeroReservation = genererNumeroReservation();
         this.dateReservation = LocalDateTime.now();
         this.nombrePassager = nombrePassager;
         this.prixTotale = prixTotale;
         this.statut = StatusReservation.PENDING;
+        this.passengerList = passengerList;
     }
 
     // Génère un numéro de réservation unique
