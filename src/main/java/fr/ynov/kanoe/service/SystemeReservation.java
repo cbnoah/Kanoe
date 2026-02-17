@@ -1,6 +1,7 @@
 package main.java.fr.ynov.kanoe.service;
 
 import main.java.fr.ynov.kanoe.enums.TypeBillet;
+import main.java.fr.ynov.kanoe.model.Passenger;
 import main.java.fr.ynov.kanoe.model.Reservation;
 import main.java.fr.ynov.kanoe.model.Transport;
 import main.java.fr.ynov.kanoe.model.Users;
@@ -40,7 +41,7 @@ public class SystemeReservation {
 
     public List<Transport> rechercherTransports(String origine, String destination, LocalDateTime dateDepart) {
         System.out.println("\n🔍 Search transport from " + origine + " to " + destination +
-                          " on " + dateDepart.toLocalDate());
+                " on " + dateDepart.toLocalDate());
 
         List<Transport> resultats = transportsDisponibles.stream()
                 .filter(t -> t.getStatingPoint().equalsIgnoreCase(origine))
@@ -53,27 +54,39 @@ public class SystemeReservation {
         return resultats;
     }
 
+    public Transport searchForTransportWithID(String id) {
+        List<Transport> resultats = transportsDisponibles.stream()
+                .filter(t -> t.getId().equalsIgnoreCase(id))
+                .filter(t -> t.getAvailableSeats() > 0)
+                .toList();
 
-    public Reservation creerReservation(Users utilisateur, Transport transport, int nombrePassagers, TypeBillet typeBillet) {
+        if (resultats.isEmpty()) {
+            System.out.println("No transport found with ID: " + id);
+        }
+        return resultats.getFirst();
+    }
+
+
+    public Reservation creerReservation(Users utilisateur, Transport transport, List<Passenger> passengerList, TypeBillet typeBillet) {
 
         if (!utilisateurs.contains(utilisateur)) {
             System.out.println("❌ User not registered in the system");
             return null;
         }
 
-        double prixBase = transport.getBasePrice() * nombrePassagers;
+        double prixBase = transport.getBasePrice() * passengerList.size();
         double prixTotal = calculerPrixAvecTypeBillet(prixBase, typeBillet);
 
-        Reservation reservation = new Reservation(nombrePassagers, prixTotal);
+        Reservation reservation = new Reservation(passengerList.size(), prixTotal, passengerList);
         reservations.add(reservation);
 
         // ✅ Notification de confirmation de réservation
         Notification notifReservation = new Notification(
-            "RReservation confirmed",
-            "Your reservation " + reservation.getNumeroReservation() +
-            " for " + transport.getStatingPoint() + " → " + transport.getEndPoint() +
-            " has been successfully created. Total price: " + prixTotal + "€",
-            "CONFIRMATION"
+                "RReservation confirmed",
+                "Your reservation " + reservation.getNumeroReservation() +
+                        " for " + transport.getStatingPoint() + " → " + transport.getEndPoint() +
+                        " has been successfully created. Total price: " + prixTotal + "€",
+                "CONFIRMATION"
         );
         notificationManager.notifyObserver(utilisateur, notifReservation); // ✅ Notifie uniquement cet utilisateur
 
@@ -104,7 +117,7 @@ public class SystemeReservation {
 
         transportsDisponibles.add(transport);
         System.out.println("✅ Transport added: " + transport.getStatingPoint() + " → " +
-                          transport.getEndPoint() + " (" + transport.getClass().getSimpleName() + ")");
+                transport.getEndPoint() + " (" + transport.getClass().getSimpleName() + ")");
     }
 
 
@@ -129,14 +142,14 @@ public class SystemeReservation {
 
         // ✅ Welcome notification
         Notification notifBienvenue = new Notification(
-            "Welcome to Kanoe!",
-            "Welcome " + utilisateur.getFirstName() + "! Your account has been successfully created.",
-            "INFO"
+                "Welcome to Kanoe!",
+                "Welcome " + utilisateur.getFirstName() + "! Your account has been successfully created.",
+                "INFO"
         );
         notificationManager.notifyObserver(utilisateur, notifBienvenue);
 
         System.out.println("✅ User registered: " + utilisateur.getFirstName() + " " + utilisateur.getLastName() +
-                          " (" + utilisateur.getEmail() + ")");
+                " (" + utilisateur.getEmail() + ")");
     }
 
 
