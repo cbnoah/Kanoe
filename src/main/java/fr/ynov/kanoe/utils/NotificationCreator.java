@@ -1,4 +1,4 @@
-package main.java.fr.ynov.kanoe.cli;
+package main.java.fr.ynov.kanoe.utils;
 
 import main.java.fr.ynov.kanoe.model.Reservation;
 import main.java.fr.ynov.kanoe.model.Users;
@@ -7,10 +7,10 @@ import main.java.fr.ynov.kanoe.service.SystemeReservation;
 
 import java.util.List;
 
-public class NotificationCreatorCLI {
+public class NotificationCreator {
     private final SystemeReservation system;
 
-    public NotificationCreatorCLI(SystemeReservation system) {
+    public NotificationCreator(SystemeReservation system) {
         this.system = system;
     }
 
