@@ -1,6 +1,4 @@
 package main.java.fr.ynov.kanoe.model;
-import java.time.LocalDate;
-import javax.management.Notification;
 
 public class Passenger {
     protected String lastName;
@@ -40,15 +38,7 @@ public class Passenger {
         return passportNumber;
     }
 
-
-    public void notification(Notification notification) {
-    if (notification == null) {
-        throw new IllegalArgumentException("The notification cannot be null");
-    }
-    System.out.println("Notification for " + firstName + " " + lastName + ": " + notification);
-}   
-
-        @Override
+    @Override
     public String toString() {
         return "Passenger{" +
                 "lastName='" + lastName + '\'' +
