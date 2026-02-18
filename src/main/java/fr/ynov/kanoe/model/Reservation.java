@@ -18,11 +18,12 @@ public class Reservation {
     private double prixTotale;
     private StatusReservation statut;
     private Payment payment;
+    private Transport transport;
 
     private List<Passenger> passengerList;
 
     // Constructeur
-    public Reservation(int nombrePassager, double prixTotale, List<Passenger> passengerList, int userId, MethodPayment methodPayment) {
+    public Reservation(int nombrePassager, double prixTotale, List<Passenger> passengerList, int userId, MethodPayment methodPayment, Transport transport) {
         this.userId = userId;
         this.numeroReservation = genererNumeroReservation();
         this.dateReservation = LocalDateTime.now();
@@ -31,6 +32,7 @@ public class Reservation {
         this.passengerList = passengerList;
         this.payment = new Payment(0, prixTotale, LocalDateTime.now(), methodPayment);
         this.statut = StatusReservation.PENDING;
+        this.transport = transport;
     }
 
     private String genererNumeroReservation(){
@@ -70,6 +72,10 @@ public class Reservation {
 
     public StatusReservation getStatut() {
         return statut;
+    }
+
+    public Transport getTransport() {
+        return transport;
     }
 
     // Setters
