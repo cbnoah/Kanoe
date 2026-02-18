@@ -1,7 +1,8 @@
 package main.java.fr.ynov.kanoe.model;
 import main.java.fr.ynov.kanoe.observer.Observer;
 import main.java.fr.ynov.kanoe.service.Notification;
-public class Users implements Observer {
+
+public class User implements Observer {
     protected String lastName;
     protected String firstName;
     protected String email;
@@ -9,7 +10,7 @@ public class Users implements Observer {
     protected String password;
     protected int id;
     
-    public Users(String lastName, String firstName, String email, String phone, String password, int id) {
+    public User(String lastName, String firstName, String email, String phone, String password, int id) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
@@ -46,12 +47,10 @@ public class Users implements Observer {
     
     @Override
     public String toString() {
-        return "User{" +
-                "lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
+        return "Last name='" + lastName + '\'' +
+                ", First name='" + firstName + '\'' +
                 ", email='" + email + '\'' +
-                ", id=" + id +
-                '}';
+                ", phone='" + phone;
     }
 
         @Override
