@@ -91,7 +91,6 @@ public class Bus extends Transport {
         }
 
         public Bus build() {
-            // Validation si nécessaire
             if (id == null || operator == null) {
                 throw new IllegalStateException("ID and Operator must be provided");
             }

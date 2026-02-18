@@ -101,7 +101,6 @@ public class Train extends Transport {
         }
 
         public Train build() {
-            // Validation si nécessaire
             if (id == null || operator == null) {
                 throw new IllegalStateException("ID and Operator must be provided");
             }
