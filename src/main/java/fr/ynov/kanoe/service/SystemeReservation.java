@@ -1,5 +1,6 @@
 package main.java.fr.ynov.kanoe.service;
 
+import main.java.fr.ynov.kanoe.enums.MethodPayment;
 import main.java.fr.ynov.kanoe.enums.TypeBillet;
 import main.java.fr.ynov.kanoe.model.Passenger;
 import main.java.fr.ynov.kanoe.model.Reservation;
@@ -67,17 +68,17 @@ public class SystemeReservation {
     }
 
 
-    public Reservation creerReservation(Users utilisateur, Transport transport, List<Passenger> passengerList, TypeBillet typeBillet) {
+    public void creerReservation(Users utilisateur, Transport transport, List<Passenger> passengerList, TypeBillet typeBillet, MethodPayment methodPayment) {
 
         if (!utilisateurs.contains(utilisateur)) {
             System.out.println("❌ User not registered in the system");
-            return null;
+            return;
         }
 
         double prixBase = transport.getBasePrice() * passengerList.size();
         double prixTotal = calculerPrixAvecTypeBillet(prixBase, typeBillet);
 
-        Reservation reservation = new Reservation(passengerList.size(), prixTotal, passengerList);
+        Reservation reservation = new Reservation(passengerList.size(), prixTotal, passengerList, utilisateur.getId(), methodPayment);
         reservations.add(reservation);
 
         // ✅ Notification de confirmation de réservation
@@ -91,7 +92,6 @@ public class SystemeReservation {
         notificationManager.notifyObserver(utilisateur, notifReservation); // ✅ Notifie uniquement cet utilisateur
 
         System.out.println("✅ RReservation created: " + reservation.getNumeroReservation());
-        return reservation;
     }
 
 
