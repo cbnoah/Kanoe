@@ -34,8 +34,8 @@ public class GuestAccountCLI {
                 case 2 -> createAccount();
                 case 3 -> {
                     System.out.println("Available transports:");
-                    for (int i = 0; i < system.getTransportsDisponibles().size(); i++) {
-                        System.out.println(i + 1 + " - " + system.getTransportsDisponibles().get(i));
+                    for (int i = 0; i < system.getAvailableTransports().size(); i++) {
+                        System.out.println(i + 1 + " - " + system.getAvailableTransports().get(i));
                     }
                 }
                 case 4 -> running = false;
@@ -52,7 +52,7 @@ public class GuestAccountCLI {
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
-        for (User user : system.getUtilisateurs()) {
+        for (User user : system.getUsers()) {
             if (user.getEmail().equals(email) && user.verifyPassword(password)) {
                 System.out.println("Connexion successful for " + user.getFirstName() + " " + user.getLastName());
                 new UserConnectedCLI(user, system).displayUserMenu();
@@ -75,8 +75,8 @@ public class GuestAccountCLI {
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
-        User newUser = new User(lastName, firstName, email, phone, password, system.getUtilisateurs().size() + 1);
-        system.enregistrerUtilisateur(newUser);
+        User newUser = new User(lastName, firstName, email, phone, password, system.getUsers().size() + 1);
+        system.saveUser(newUser);
         new UserConnectedCLI(newUser, system).displayUserMenu();
     }
 }
