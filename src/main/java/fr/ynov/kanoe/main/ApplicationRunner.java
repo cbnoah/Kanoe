@@ -7,7 +7,7 @@ import main.java.fr.ynov.kanoe.service.SystemeReservation;
 
 import java.time.LocalDateTime;
 
-import static main.java.fr.ynov.kanoe.cli.Menu.displayMainMenu;
+import static main.java.fr.ynov.kanoe.cli.GuestAccountCLI.displayMainMenu;
 
 public class ApplicationRunner {
     public static void main(String[] args) {
