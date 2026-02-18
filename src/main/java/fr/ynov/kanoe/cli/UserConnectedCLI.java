@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static main.java.fr.ynov.kanoe.utils.ScannerUtils.readInt;
+
 public class UserConnectedCLI {
     private final Users user;
     private final SystemeReservation system;
@@ -38,7 +40,7 @@ public class UserConnectedCLI {
             System.out.println("===================================");
             System.out.println("5. Log out");
 
-            int choice = readInt("Choose an option: ");
+            int choice = readInt("Choose an option: ", scanner);
 
             switch (choice) {
                 case 1 -> {
@@ -60,7 +62,7 @@ public class UserConnectedCLI {
                             System.out.println(i + 1 + " - " + userReservations.get(i));
                         }
                         System.out.print("Enter the index of the reservation you want to manage: ");
-                        int reservationChoice = readInt("");
+                        int reservationChoice = readInt("", scanner);
                         if (reservationChoice > 0 && reservationChoice <= userReservations.size()) {
                             new BookingHandling(userReservations.get(reservationChoice - 1)).ManageOneBooking();
                         } else {
@@ -117,7 +119,7 @@ public class UserConnectedCLI {
     public List<Passenger> addPassagerToReservation(List<Passenger> passengerList) {
         int numberOfPassengers;
         while (true) {
-            numberOfPassengers = readInt("Enter the number of passengers you want to add: ");
+            numberOfPassengers = readInt("Enter the number of passengers you want to add: ", scanner);
             if (numberOfPassengers > 0) break;
             System.out.println("Invalid number of passengers. Please try again.");
         }
@@ -131,7 +133,7 @@ public class UserConnectedCLI {
 
             int age;
             while (true) {
-                age = readInt("Enter the age of the passenger: ");
+                age = readInt("Enter the age of the passenger: ", scanner);
                 if (age >= 0) break;
                 System.out.println("Please enter a valid age.");
             }
@@ -145,7 +147,7 @@ public class UserConnectedCLI {
         System.out.println("1. Economique");
         System.out.println("2. Affaire");
         System.out.println("3. Première classe");
-        int choice = readInt("");
+        int choice = readInt("", scanner);
         return switch (choice) {
             case 2 -> TypeBillet.AFFAIRE;
             case 3 -> TypeBillet.PREMIERE_CLASSE;
@@ -158,23 +160,11 @@ public class UserConnectedCLI {
         System.out.println("1. Credit card");
         System.out.println("2. PayPal");
         System.out.println("3. Bank transfer");
-        int choice = readInt("");
+        int choice = readInt("", scanner);
         return switch (choice) {
             case 2 -> MethodPayment.PAYPAL;
             case 3 -> MethodPayment.BANK_TRANSFER;
             default -> MethodPayment.CREDIT_CARD;
         };
-    }
-
-    public int readInt(String prompt) {
-        if (prompt != null && !prompt.isEmpty()) System.out.print(prompt);
-        while (!scanner.hasNextInt()) {
-            System.out.println("Please enter a valid integer.");
-            scanner.nextLine();
-            System.out.print(prompt);
-        }
-        int val = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-        return val;
     }
 }
