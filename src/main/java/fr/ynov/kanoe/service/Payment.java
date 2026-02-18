@@ -1,6 +1,6 @@
 package main.java.fr.ynov.kanoe.service;
 
-import main.java.fr.ynov.kanoe.enums.MethodPayment;
+import main.java.fr.ynov.kanoe.enums.paymentMethod;
 import main.java.fr.ynov.kanoe.enums.StatusPayment;
 
 import java.time.LocalDateTime;
@@ -9,11 +9,11 @@ public class Payment {
     protected final int idTransaction;
     protected final double amount;
     protected final LocalDateTime datePayment;
-    protected final MethodPayment method;
+    protected final paymentMethod method;
 
     protected StatusPayment status;
 
-    public Payment(int idTransaction, double amount, LocalDateTime datePayment, MethodPayment method) {
+    public Payment(int idTransaction, double amount, LocalDateTime datePayment, paymentMethod method) {
         this.idTransaction = idTransaction;
         this.amount = amount;
         this.datePayment = datePayment;
@@ -33,7 +33,7 @@ public class Payment {
         return datePayment;
     }
 
-    public MethodPayment getMethod() {
+    public paymentMethod getMethod() {
         return method;
     }
 
