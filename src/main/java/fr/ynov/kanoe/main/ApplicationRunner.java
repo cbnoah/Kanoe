@@ -4,6 +4,7 @@ import main.java.fr.ynov.kanoe.cli.GuestAccountCLI;
 import main.java.fr.ynov.kanoe.model.Avion;
 import main.java.fr.ynov.kanoe.model.Bus;
 import main.java.fr.ynov.kanoe.model.Train;
+import main.java.fr.ynov.kanoe.model.Users;
 import main.java.fr.ynov.kanoe.service.SystemeReservation;
 
 import java.time.LocalDateTime;
@@ -51,6 +52,8 @@ public class ApplicationRunner {
                 .setBusNumber("FLX001")
                 .setAirConditioning(true)
                 .build());
+
+        system.enregistrerUtilisateur(new Users("Doe", "John", "a", "0123456879", "a", system.getUtilisateurs().size()));
 
         // Display the main menu
         new GuestAccountCLI(system).displayMainMenu();
