@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
-public class Reservation {
+public class Booking {
     private int userId;
     private String numeroReservation;
     private LocalDateTime dateReservation;
@@ -22,8 +22,8 @@ public class Reservation {
 
     private List<Passenger> passengerList;
 
-    // Constructeur
-    public Reservation(int nombrePassager, double prixTotale, List<Passenger> passengerList, int userId, MethodPayment methodPayment, Transport transport) {
+    // Constructor
+    public Booking(int nombrePassager, double prixTotale, List<Passenger> passengerList, int userId, MethodPayment methodPayment, Transport transport) {
         this.userId = userId;
         this.numeroReservation = genererNumeroReservation();
         this.dateReservation = LocalDateTime.now();
@@ -87,7 +87,7 @@ public class Reservation {
         this.prixTotale = prixTotale;
     }
 
-    // Méthodes métier
+    // Methods
     public void confirmer(){
         this.statut = StatusReservation.SUCCESS;
     }
