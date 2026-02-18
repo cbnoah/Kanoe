@@ -60,11 +60,7 @@ public class SystemeReservation {
                 .filter(t -> t.getId().equalsIgnoreCase(id))
                 .filter(t -> t.getAvailableSeats() > 0)
                 .toList();
-
-        if (resultats.isEmpty()) {
-            System.out.println("No transport found with ID: " + id);
-        }
-        return resultats.getFirst();
+        return resultats.isEmpty() ? null : resultats.getFirst();
     }
 
 
