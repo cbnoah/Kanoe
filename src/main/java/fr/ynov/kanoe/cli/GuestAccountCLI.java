@@ -1,7 +1,7 @@
 package main.java.fr.ynov.kanoe.cli;
 
-import main.java.fr.ynov.kanoe.model.Users;
-import main.java.fr.ynov.kanoe.service.SystemeReservation;
+import main.java.fr.ynov.kanoe.model.User;
+import main.java.fr.ynov.kanoe.service.BookingSystem;
 
 import java.util.Scanner;
 
@@ -9,9 +9,9 @@ import static main.java.fr.ynov.kanoe.utils.ScannerUtils.readInt;
 
 public class GuestAccountCLI {
     private final Scanner scanner = new Scanner(System.in);
-    private final SystemeReservation system;
+    private final BookingSystem system;
 
-    public GuestAccountCLI(SystemeReservation system) {
+    public GuestAccountCLI(BookingSystem system) {
         this.system = system;
     }
 
@@ -20,7 +20,7 @@ public class GuestAccountCLI {
 
         while (running) {
 
-            System.out.println("=== Main menu ===");
+            System.out.println("=== Main menu, Welcome to Kanoe ! ===");
             System.out.println("1. Login");
             System.out.println("2. Sign in");
             System.out.println("3. Show available transports");
@@ -52,7 +52,7 @@ public class GuestAccountCLI {
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
-        for (Users user : system.getUtilisateurs()) {
+        for (User user : system.getUtilisateurs()) {
             if (user.getEmail().equals(email) && user.verifyPassword(password)) {
                 System.out.println("Connexion successful for " + user.getFirstName() + " " + user.getLastName());
                 new UserConnectedCLI(user, system).displayUserMenu();
@@ -75,7 +75,7 @@ public class GuestAccountCLI {
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
-        Users newUser = new Users(lastName, firstName, email, phone, password, system.getUtilisateurs().size() + 1);
+        User newUser = new User(lastName, firstName, email, phone, password, system.getUtilisateurs().size() + 1);
         system.enregistrerUtilisateur(newUser);
         new UserConnectedCLI(newUser, system).displayUserMenu();
     }
