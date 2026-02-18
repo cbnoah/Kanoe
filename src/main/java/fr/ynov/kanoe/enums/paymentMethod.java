@@ -1,6 +1,6 @@
 package main.java.fr.ynov.kanoe.enums;
 
-public enum MethodPayment {
+public enum paymentMethod {
     DEBIT_CARD,
     CREDIT_CARD,
     PAYPAL,
