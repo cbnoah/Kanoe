@@ -163,6 +163,9 @@ public class SystemeReservation {
         return new ArrayList<>(utilisateurs);
     }
 
+    public NotificationManager getNotificationManager() {
+        return notificationManager;
+    }
 
     public void afficherResume() {
         System.out.println("\n═══════════════════════════════════════════");
