@@ -2,12 +2,12 @@
 package main.java.fr.ynov.kanoe.cli;
 
 import main.java.fr.ynov.kanoe.enums.MethodPayment;
-import main.java.fr.ynov.kanoe.enums.TypeBillet;
+import main.java.fr.ynov.kanoe.enums.TicketType;
 import main.java.fr.ynov.kanoe.model.Passenger;
-import main.java.fr.ynov.kanoe.model.Reservation;
+import main.java.fr.ynov.kanoe.model.Booking;
 import main.java.fr.ynov.kanoe.model.Transport;
-import main.java.fr.ynov.kanoe.model.Users;
-import main.java.fr.ynov.kanoe.service.SystemeReservation;
+import main.java.fr.ynov.kanoe.model.User;
+import main.java.fr.ynov.kanoe.service.BookingSystem;
 import main.java.fr.ynov.kanoe.utils.NotificationCreator;
 
 import java.util.ArrayList;
@@ -17,11 +17,11 @@ import java.util.Scanner;
 import static main.java.fr.ynov.kanoe.utils.ScannerUtils.readInt;
 
 public class UserConnectedCLI {
-    private final Users user;
-    private final SystemeReservation system;
+    private final User user;
+    private final BookingSystem system;
     private final Scanner scanner = new Scanner(System.in);
 
-    public UserConnectedCLI(Users user, SystemeReservation system) {
+    public UserConnectedCLI(User user, BookingSystem system) {
         this.user = user;
         this.system = system;
     }
@@ -51,20 +51,20 @@ public class UserConnectedCLI {
                 }
                 case 2 -> bookTransport();
                 case 3 -> {
-                    List<Reservation> userReservations = system.getReservations().stream()
+                    List<Booking> userBookings = system.getReservations().stream()
                             .filter(r -> r.getUserId() == user.getId())
                             .toList();
-                    if (userReservations.isEmpty()) {
+                    if (userBookings.isEmpty()) {
                         System.out.println("You have no reservations.");
                     } else {
                         System.out.println("Your reservations:");
-                        for (int i = 0; i < userReservations.size(); i++) {
-                            System.out.println(i + 1 + " - " + userReservations.get(i));
+                        for (int i = 0; i < userBookings.size(); i++) {
+                            System.out.println(i + 1 + " - " + userBookings.get(i));
                         }
                         System.out.print("Enter the index of the reservation you want to manage: ");
                         int reservationChoice = readInt("", scanner);
-                        if (reservationChoice > 0 && reservationChoice <= userReservations.size()) {
-                            new BookingHandling(userReservations.get(reservationChoice - 1)).ManageOneBooking();
+                        if (reservationChoice > 0 && reservationChoice <= userBookings.size()) {
+                            new BookingHandling(userBookings.get(reservationChoice - 1)).ManageOneBooking();
                         } else {
                             System.out.println("Invalid reservation number.");
                         }
@@ -142,16 +142,16 @@ public class UserConnectedCLI {
         return passengerList;
     }
 
-    public TypeBillet chooseTypeBillet() {
+    public TicketType chooseTypeBillet() {
         System.out.println("Choose the type of ticket:");
         System.out.println("1. Economique");
         System.out.println("2. Affaire");
         System.out.println("3. Première classe");
         int choice = readInt("", scanner);
         return switch (choice) {
-            case 2 -> TypeBillet.AFFAIRE;
-            case 3 -> TypeBillet.PREMIERE_CLASSE;
-            default -> TypeBillet.ECONOMIQUE;
+            case 2 -> TicketType.BUSINESS;
+            case 3 -> TicketType.FIRST_CLASS;
+            default -> TicketType.ECO;
         };
     }
 
@@ -162,8 +162,9 @@ public class UserConnectedCLI {
         System.out.println("3. Bank transfer");
         int choice = readInt("", scanner);
         return switch (choice) {
-            case 2 -> MethodPayment.PAYPAL;
-            case 3 -> MethodPayment.BANK_TRANSFER;
+            case 2 -> MethodPayment.DEBIT_CARD;
+            case 3 -> MethodPayment.PAYPAL;
+            case 4 -> MethodPayment.BANK_TRANSFER;
             default -> MethodPayment.CREDIT_CARD;
         };
     }
