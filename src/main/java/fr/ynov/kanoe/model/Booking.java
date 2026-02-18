@@ -1,6 +1,6 @@
 package main.java.fr.ynov.kanoe.model;
 
-import main.java.fr.ynov.kanoe.enums.MethodPayment;
+import main.java.fr.ynov.kanoe.enums.paymentMethod;
 import main.java.fr.ynov.kanoe.enums.StatusPayment;
 import main.java.fr.ynov.kanoe.enums.StatusReservation;
 import main.java.fr.ynov.kanoe.service.Payment;
@@ -11,31 +11,30 @@ import java.util.List;
 import java.util.UUID;
 
 public class Booking {
-    private int userId;
-    private String numeroReservation;
-    private LocalDateTime dateReservation;
-    private int nombrePassager;
-    private double prixTotale;
+    private final int userId;
+    private final String bookingNumber;
+    private final LocalDateTime dateReservation;
+    private int passengersNumber;
+    private double totalPrice;
     private StatusReservation statut;
-    private Payment payment;
-    private Transport transport;
-
-    private List<Passenger> passengerList;
+    private final Payment payment;
+    private final Transport transport;
+    private final List<Passenger> passengerList;
 
     // Constructor
-    public Booking(int nombrePassager, double prixTotale, List<Passenger> passengerList, int userId, MethodPayment methodPayment, Transport transport) {
+    public Booking(int passengersNumber, double totalPrice, List<Passenger> passengerList, int userId, paymentMethod paymentMethod, Transport transport) {
         this.userId = userId;
-        this.numeroReservation = genererNumeroReservation();
+        this.bookingNumber = generateBookingNumber();
         this.dateReservation = LocalDateTime.now();
-        this.nombrePassager = nombrePassager;
-        this.prixTotale = prixTotale;
+        this.passengersNumber = passengersNumber;
+        this.totalPrice = totalPrice;
         this.passengerList = passengerList;
-        this.payment = new Payment(0, prixTotale, LocalDateTime.now(), methodPayment);
+        this.payment = new Payment(0, totalPrice, LocalDateTime.now(), paymentMethod);
         this.statut = StatusReservation.PENDING;
         this.transport = transport;
     }
 
-    private String genererNumeroReservation(){
+    private String generateBookingNumber(){
 
         String prefix = "RES";
         String dateFormat = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -50,8 +49,8 @@ public class Booking {
         return passengerList;
     }
 
-    public String getNumeroReservation() {
-        return numeroReservation;
+    public String getBookingNumber() {
+        return bookingNumber;
     }
 
     public int getUserId() {
@@ -62,12 +61,12 @@ public class Booking {
         return dateReservation;
     }
 
-    public int getNombrePassager() {
-        return nombrePassager;
+    public int getPassengersNumber() {
+        return passengersNumber;
     }
 
-    public double getPrixTotale() {
-        return prixTotale;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
     public StatusReservation getStatut() {
@@ -79,12 +78,12 @@ public class Booking {
     }
 
     // Setters
-    public void setNombrePassager(int nombrePassager) {
-        this.nombrePassager = nombrePassager;
+    public void setPassengersNumber(int passengersNumber) {
+        this.passengersNumber = passengersNumber;
     }
 
-    public void setPrixTotale(double prixTotale) {
-        this.prixTotale = prixTotale;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     // Methods
@@ -97,8 +96,8 @@ public class Booking {
         this.payment.cancelPayment();
     }
 
-    public void ajouterPassager(){
-        this.nombrePassager++;
+    public void addPassenger(){
+        this.passengersNumber++;
     }
 
     public boolean processPayment() {
@@ -116,10 +115,10 @@ public class Booking {
     public String toString() {
         return "Reservation{" +
                 "userId=" + userId +
-                "numeroReservation='" + numeroReservation + '\'' +
+                "numeroReservation='" + bookingNumber + '\'' +
                 ", dateReservation=" + dateReservation +
-                ", nombrePassager=" + nombrePassager +
-                ", prixTotale=" + prixTotale +
+                ", nombrePassager=" + passengersNumber +
+                ", prixTotale=" + totalPrice +
                 ", statut=" + statut +
                 ", paymentStatus=" + payment.getStatus() +
                 ", passengerList=" + passengerList +
