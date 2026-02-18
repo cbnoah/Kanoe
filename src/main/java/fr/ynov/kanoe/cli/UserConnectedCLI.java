@@ -1,7 +1,7 @@
 // java
 package main.java.fr.ynov.kanoe.cli;
 
-import main.java.fr.ynov.kanoe.enums.MethodPayment;
+import main.java.fr.ynov.kanoe.enums.paymentMethod;
 import main.java.fr.ynov.kanoe.enums.TicketType;
 import main.java.fr.ynov.kanoe.model.Passenger;
 import main.java.fr.ynov.kanoe.model.Booking;
@@ -45,13 +45,13 @@ public class UserConnectedCLI {
             switch (choice) {
                 case 1 -> {
                     System.out.println("Available transports:");
-                    for (int i = 0; i < system.getTransportsDisponibles().size(); i++) {
-                        System.out.println(i + 1 + " - " + system.getTransportsDisponibles().get(i));
+                    for (int i = 0; i < system.getAvailableTransports().size(); i++) {
+                        System.out.println(i + 1 + " - " + system.getAvailableTransports().get(i));
                     }
                 }
                 case 2 -> bookTransport();
                 case 3 -> {
-                    List<Booking> userBookings = system.getReservations().stream()
+                    List<Booking> userBookings = system.getBookings().stream()
                             .filter(r -> r.getUserId() == user.getId())
                             .toList();
                     if (userBookings.isEmpty()) {
@@ -91,8 +91,8 @@ public class UserConnectedCLI {
     }
 
     public void bookTransport() {
-        for (int i = 0; i < system.getTransportsDisponibles().size(); i++) {
-            System.out.println(i + 1 + " - " + system.getTransportsDisponibles().get(i));
+        for (int i = 0; i < system.getAvailableTransports().size(); i++) {
+            System.out.println(i + 1 + " - " + system.getAvailableTransports().get(i));
         }
         System.out.print("Enter the ID of the transport you want to book: ");
         String transportId = scanner.nextLine().trim();
@@ -102,15 +102,15 @@ public class UserConnectedCLI {
         } else {
             try {
                 int idx = Integer.parseInt(transportId) - 1;
-                if (idx >= 0 && idx < system.getTransportsDisponibles().size()) {
-                    selectedTransport = system.getTransportsDisponibles().get(idx);
+                if (idx >= 0 && idx < system.getAvailableTransports().size()) {
+                    selectedTransport = system.getAvailableTransports().get(idx);
                 }
             } catch (NumberFormatException ignored) {
             }
         }
         if (selectedTransport != null && selectedTransport.getAvailableSeats() > 0) {
             List<Passenger> passengerList = new ArrayList<>();
-            system.creerReservation(user, selectedTransport, addPassagerToReservation(passengerList), chooseTypeBillet(), chooseMethodPayment());
+            system.createBooking(user, selectedTransport, addPassagerToReservation(passengerList), chooseTypeBillet(), chooseMethodPayment());
             return;
         }
         System.out.println("Invalid transport ID or no available seats. Please try again.");
@@ -155,7 +155,7 @@ public class UserConnectedCLI {
         };
     }
 
-    public MethodPayment chooseMethodPayment() {
+    public paymentMethod chooseMethodPayment() {
         System.out.println("Choose the method of payment:");
         System.out.println("1. Credit card");
         System.out.println("2. PayPal");
