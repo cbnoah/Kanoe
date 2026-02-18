@@ -1,24 +1,24 @@
 package main.java.fr.ynov.kanoe.cli;
 
 import main.java.fr.ynov.kanoe.enums.StatusReservation;
-import main.java.fr.ynov.kanoe.model.Reservation;
+import main.java.fr.ynov.kanoe.model.Booking;
 
 import java.util.Scanner;
 
 public class BookingHandling {
-    Reservation reservation;
+    Booking booking;
 
-    public BookingHandling(Reservation reservation) {
-        this.reservation = reservation;
+    public BookingHandling(Booking booking) {
+        this.booking = booking;
     }
 
     public void ManageOneBooking() {
         Scanner scanner = new Scanner(System.in);
-        if (reservation.getStatut() == StatusReservation.CANCELED) {
+        if (booking.getStatut() == StatusReservation.CANCELED) {
             System.out.println("This reservation is already canceled.");
             return;
         }
-        if (this.reservation.getStatut() == StatusReservation.SUCCESS) {
+        if (this.booking.getStatut() == StatusReservation.SUCCESS) {
             System.out.println("This reservation is already confirmed.");
             return;
         }
@@ -29,15 +29,15 @@ public class BookingHandling {
         int choice = scanner.nextInt();
         switch (choice) {
             case 1 -> {
-                if (reservation.processPayment()) {
+                if (booking.processPayment()) {
                     System.out.println("Reservation confirmed!");
                 } else {
                     System.out.println("Payment failed, reservation not confirmed.");
                 }
             }
             case 2 -> {
-                reservation.annuler();
-                reservation.getTransport().freeSeat(reservation.getPassengerList().size());
+                booking.annuler();
+                booking.getTransport().freeSeat(booking.getPassengerList().size());
                 System.out.println("Reservation canceled.");
             }
         }
