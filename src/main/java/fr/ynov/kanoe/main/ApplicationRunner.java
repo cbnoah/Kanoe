@@ -1,0 +1,61 @@
+package main.java.fr.ynov.kanoe.main;
+
+import main.java.fr.ynov.kanoe.cli.GuestAccountCLI;
+import main.java.fr.ynov.kanoe.model.Plane;
+import main.java.fr.ynov.kanoe.model.Bus;
+import main.java.fr.ynov.kanoe.model.Train;
+import main.java.fr.ynov.kanoe.model.User;
+import main.java.fr.ynov.kanoe.service.BookingSystem;
+
+import java.time.LocalDateTime;
+
+public class ApplicationRunner {
+    public static void main(String[] args) {
+        BookingSystem system = new BookingSystem();
+        // Creating some dummy data for testing
+        system.addTransport(new Plane.Builder()
+                .setId("AV001")
+                .setOperator("Air France")
+                .setStatingPoint("Paris")
+                .setEndPoint("New York")
+                .setTimeDepart(LocalDateTime.parse("2024-07-01T10:00:00"))
+                .setTimeArriving(LocalDateTime.parse("2024-07-01T14:00:00"))
+                .setCapacity(400)
+                .setBasePrice(500.0)
+                .setPlaneNumber("AF001")
+                .setInFlightEntertainment(true)
+                .build());
+
+        system.addTransport(new Train.Builder()
+                .setId("TR001")
+                .setOperator("SNCF")
+                .setStatingPoint("Paris")
+                .setEndPoint("Lyon")
+                .setTimeDepart(LocalDateTime.parse("2024-07-01T08:00:00"))
+                .setTimeArriving(LocalDateTime.parse("2024-07-01T10:00:00"))
+                .setCapacity(300)
+                .setBasePrice(100.0)
+                .setTrainNumber("SNCF001")
+                .setHasWifi(true)
+                .setHasDiningCar(true)
+                .build());
+
+        system.addTransport(new Bus.Builder()
+                .setId("BS001")
+                .setOperator("FlixBus")
+                .setStatingPoint("Paris")
+                .setEndPoint("Brussels")
+                .setTimeDepart(LocalDateTime.parse("2024-07-01T09:00:00"))
+                .setTimeArriving(LocalDateTime.parse("2024-07-01T12:00:00"))
+                .setCapacity(50)
+                .setBasePrice(30.0)
+                .setBusNumber("FLX001")
+                .setAirConditioning(true)
+                .build());
+
+        system.saveUser(new User("Doe", "John", "a", "0123456879", "a", system.getUsers().size()));
+
+        // Display the main menu
+        new GuestAccountCLI(system).displayMainMenu();
+    }
+}
