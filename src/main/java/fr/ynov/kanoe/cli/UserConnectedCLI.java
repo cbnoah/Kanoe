@@ -8,6 +8,7 @@ import main.java.fr.ynov.kanoe.model.Reservation;
 import main.java.fr.ynov.kanoe.model.Transport;
 import main.java.fr.ynov.kanoe.model.Users;
 import main.java.fr.ynov.kanoe.service.SystemeReservation;
+import main.java.fr.ynov.kanoe.utils.NotificationCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,7 @@ public class UserConnectedCLI {
                     String message = scanner.nextLine();
                     System.out.print("Scope (transport ID): ");
                     String scope = scanner.nextLine();
-                    new NotificationCreatorCLI(system).createNotification(title, message, scope);
+                    new NotificationCreator(system).createNotification(title, message, scope);
                 }
                 case 5 -> {
                     System.out.println("Logging out...");
