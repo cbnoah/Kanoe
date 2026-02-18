@@ -4,5 +4,4 @@ public enum StatusReservation {
     PENDING,
     SUCCESS,
     CANCELED,
-    COMPLETED
 }
