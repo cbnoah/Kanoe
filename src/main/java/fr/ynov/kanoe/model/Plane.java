@@ -2,11 +2,11 @@ package main.java.fr.ynov.kanoe.model;
 
 import java.time.LocalDateTime;
 
-public class Avion extends Transport {
+public class Plane extends Transport {
     private final String planeNumber;
     private final boolean inFlightEntertainment;
 
-    public Avion(Builder builder) {
+    public Plane(Builder builder) {
         super(builder.id, builder.operator, builder.statingPoint, builder.endPoint,
                 builder.timeDepart, builder.timeArriving, builder.capacity, builder.basePrice);
         this.planeNumber = builder.planeNumber;
@@ -88,11 +88,11 @@ public class Avion extends Transport {
             return this;
         }
 
-        public Avion build() {
+        public Plane build() {
             if (id == null || operator == null) {
                 throw new IllegalStateException("ID et compagnie sont obligatoires");
             }
-            return new Avion(this);
+            return new Plane(this);
         }
     }
 }
