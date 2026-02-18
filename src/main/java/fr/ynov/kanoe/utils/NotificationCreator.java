@@ -22,7 +22,7 @@ public class NotificationCreator {
     }
 
     public int getUserIdForScopedUsers(String scope) {
-        for (Booking booking : system.getReservations()) {
+        for (Booking booking : system.getBookings()) {
             if (booking.getTransport().getId().equals(scope)) {
                 return booking.getUserId();
             }
@@ -31,7 +31,7 @@ public class NotificationCreator {
     }
 
     public List<User> getUserById(int userId) {
-        return system.getUtilisateurs().stream()
+        return system.getUsers().stream()
                 .filter(u -> u.getId() == userId)
                 .toList();
     }
