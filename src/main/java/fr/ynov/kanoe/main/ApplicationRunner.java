@@ -13,7 +13,7 @@ public class ApplicationRunner {
     public static void main(String[] args) {
         BookingSystem system = new BookingSystem();
         // Creating some dummy data for testing
-        system.ajouterTransport(new Plane.Builder()
+        system.addTransport(new Plane.Builder()
                 .setId("AV001")
                 .setOperator("Air France")
                 .setStatingPoint("Paris")
@@ -26,7 +26,7 @@ public class ApplicationRunner {
                 .setInFlightEntertainment(true)
                 .build());
 
-        system.ajouterTransport(new Train.Builder()
+        system.addTransport(new Train.Builder()
                 .setId("TR001")
                 .setOperator("SNCF")
                 .setStatingPoint("Paris")
@@ -40,7 +40,7 @@ public class ApplicationRunner {
                 .setHasDiningCar(true)
                 .build());
 
-        system.ajouterTransport(new Bus.Builder()
+        system.addTransport(new Bus.Builder()
                 .setId("BS001")
                 .setOperator("FlixBus")
                 .setStatingPoint("Paris")
@@ -53,7 +53,7 @@ public class ApplicationRunner {
                 .setAirConditioning(true)
                 .build());
 
-        system.enregistrerUtilisateur(new User("Doe", "John", "a", "0123456879", "a", system.getUtilisateurs().size()));
+        system.saveUser(new User("Doe", "John", "a", "0123456879", "a", system.getUsers().size()));
 
         // Display the main menu
         new GuestAccountCLI(system).displayMainMenu();
