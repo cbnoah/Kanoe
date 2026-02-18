@@ -37,6 +37,7 @@ public class BookingHandling {
             }
             case 2 -> {
                 reservation.annuler();
+                reservation.getTransport().freeSeat(reservation.getPassengerList().size());
                 System.out.println("Reservation canceled.");
             }
         }
