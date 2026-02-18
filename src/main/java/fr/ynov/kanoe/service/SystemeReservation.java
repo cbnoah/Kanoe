@@ -74,8 +74,9 @@ public class SystemeReservation {
         double prixBase = transport.getBasePrice() * passengerList.size();
         double prixTotal = calculerPrixAvecTypeBillet(prixBase, typeBillet);
 
-        Reservation reservation = new Reservation(passengerList.size(), prixTotal, passengerList, utilisateur.getId(), methodPayment);
+        Reservation reservation = new Reservation(passengerList.size(), prixTotal, passengerList, utilisateur.getId(), methodPayment, transport);
         reservations.add(reservation);
+        transport.reserverSeat(passengerList.size());
 
         // ✅ Notification de confirmation de réservation
         Notification notifReservation = new Notification(
