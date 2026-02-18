@@ -5,7 +5,7 @@ import main.java.fr.ynov.kanoe.service.SystemeReservation;
 
 import java.util.Scanner;
 
-public class Menu {
+public class GuestAccountCLI {
     public static void displayMainMenu(SystemeReservation system) {
         Scanner scanner = new Scanner(System.in);
 
@@ -49,7 +49,7 @@ public class Menu {
         for (Users user : system.getUtilisateurs()) {
             if (user.getEmail().equals(email) && user.verifyPassword(password)) {
                 System.out.println("Connexion successful for " + user.getFirstName() + " " + user.getLastName());
-                new UserConnectedInterface(user, system).displayUserMenu();
+                new UserConnectedCLI(user, system).displayUserMenu();
                 return;
             }
         }
@@ -72,6 +72,6 @@ public class Menu {
 
         Users newUser = new Users(lastName, firstName, email, phone, password, system.getUtilisateurs().size() + 1);
         system.enregistrerUtilisateur(newUser);
-        new UserConnectedInterface(newUser, system).displayUserMenu();
+        new UserConnectedCLI(newUser, system).displayUserMenu();
     }
 }
