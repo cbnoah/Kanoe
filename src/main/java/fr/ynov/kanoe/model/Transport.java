@@ -76,12 +76,16 @@ public abstract class Transport {
         return availableSeats - ammount >= 0;
     }
 
-    public boolean reserverSeat(int ammount) {
-        if (verifyDisponibilite(ammount)) {
+    public void reserverSeat(int ammount) {
+        if (verifyDisponibilite(ammount) && ammount > 0) {
             availableSeats -= ammount;
-            return true;
         }
-        return false;
+    }
+
+    public void freeSeat(int ammount) {
+        if (ammount > 0 && availableSeats + ammount <= capacity) {
+            availableSeats += ammount;
+        }
     }
 
     @Override
