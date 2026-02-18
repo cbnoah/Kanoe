@@ -1,6 +1,6 @@
 package main.java.fr.ynov.kanoe.service;
 
-import main.java.fr.ynov.kanoe.enums.MethodPayment;
+import main.java.fr.ynov.kanoe.enums.paymentMethod;
 import main.java.fr.ynov.kanoe.enums.TicketType;
 import main.java.fr.ynov.kanoe.model.Passenger;
 import main.java.fr.ynov.kanoe.model.Booking;
@@ -16,16 +16,16 @@ import java.util.stream.Collectors;
 
 public class BookingSystem {
 
-    private List<Transport> transportsDisponibles;
-    private List<Booking> bookings;
-    private List<User> utilisateurs;
+    private final List<Transport> availableTransports;
+    private final List<Booking> bookings;
+    private final List<User> users;
 
-    private NotificationManager notificationManager;
+    private final NotificationManager notificationManager;
 
     public BookingSystem() {
-        this.transportsDisponibles = new ArrayList<>();
+        this.availableTransports = new ArrayList<>();
         this.bookings = new ArrayList<>();
-        this.utilisateurs = new ArrayList<>();
+        this.users = new ArrayList<>();
         this.notificationManager = new NotificationManager();
     }
 
@@ -38,58 +38,58 @@ public class BookingSystem {
     }
 
 
-    public List<Transport> rechercherTransports(String origine, String destination, LocalDateTime dateDepart) {
-        System.out.println("\nSearch transport from " + origine + " to " + destination +
-                " on " + dateDepart.toLocalDate());
+    public List<Transport> rechercherTransports(String startingPoint, String destination, LocalDateTime departureDate) {
+        System.out.println("\nSearch transport from " + startingPoint + " to " + destination +
+                " on " + departureDate.toLocalDate());
 
-        List<Transport> resultats = transportsDisponibles.stream()
-                .filter(t -> t.getStatingPoint().equalsIgnoreCase(origine))
+        List<Transport> results = availableTransports.stream()
+                .filter(t -> t.getStatingPoint().equalsIgnoreCase(startingPoint))
                 .filter(t -> t.getEndPoint().equalsIgnoreCase(destination))
-                .filter(t -> t.getTimeDepart().toLocalDate().equals(dateDepart.toLocalDate()))
+                .filter(t -> t.getTimeDepart().toLocalDate().equals(departureDate.toLocalDate()))
                 .filter(t -> t.getAvailableSeats() > 0)
                 .collect(Collectors.toList());
 
-        System.out.println(resultats.size() + " transport(s) found:");
-        return resultats;
+        System.out.println(results.size() + " transport(s) found:");
+        return results;
     }
 
     public Transport searchForTransportWithID(String id) {
-        List<Transport> resultats = transportsDisponibles.stream()
+        List<Transport> results = availableTransports.stream()
                 .filter(t -> t.getId().equalsIgnoreCase(id))
                 .filter(t -> t.getAvailableSeats() > 0)
                 .toList();
-        return resultats.isEmpty() ? null : resultats.getFirst();
+        return results.isEmpty() ? null : results.getFirst();
     }
 
 
-    public void creerReservation(User utilisateur, Transport transport, List<Passenger> passengerList, TicketType ticketType, MethodPayment methodPayment) {
+    public void createBooking(User user, Transport transport, List<Passenger> passengerList, TicketType ticketType, paymentMethod paymentMethod) {
 
-        if (!utilisateurs.contains(utilisateur)) {
+        if (!users.contains(user)) {
             System.out.println("User not registered in the system");
             return;
         }
 
-        double prixBase = transport.getBasePrice() * passengerList.size();
-        double prixTotal = calculerPrixAvecTypeBillet(prixBase, ticketType);
+        double basePrice = transport.getBasePrice() * passengerList.size();
+        double totalPrice = calculateTicketPrice(basePrice, ticketType);
 
-        Booking booking = new Booking(passengerList.size(), prixTotal, passengerList, utilisateur.getId(), methodPayment, transport);
+        Booking booking = new Booking(passengerList.size(), totalPrice, passengerList, user.getId(), paymentMethod, transport);
         bookings.add(booking);
         transport.reserverSeat(passengerList.size());
 
         Notification notifReservation = new Notification(
                 "Reservation confirmed",
-                "Your reservation " + booking.getNumeroReservation() +
+                "Your reservation " + booking.getBookingNumber() +
                         " for " + transport.getStatingPoint() + " → " + transport.getEndPoint() +
-                        " has been successfully created. Total price: " + prixTotal + "€",
+                        " has been successfully created. Total price: " + totalPrice + "€",
                 "CONFIRMATION"
         );
-        notificationManager.notifyObserver(utilisateur, notifReservation);
+        notificationManager.notifyObserver(user, notifReservation);
 
-        System.out.println("Reservation created: " + booking.getNumeroReservation());
+        System.out.println("Reservation created: " + booking.getBookingNumber());
     }
 
 
-    private double calculerPrixAvecTypeBillet(double prixBase, TicketType ticketType) {
+    private double calculateTicketPrice(double prixBase, TicketType ticketType) {
         return switch (ticketType) {
             case BUSINESS -> prixBase * 1.5;
             case FIRST_CLASS -> prixBase * 2.0;
@@ -98,59 +98,59 @@ public class BookingSystem {
     }
 
 
-    public void ajouterTransport(Transport transport) {
+    public void addTransport(Transport transport) {
         if (transport == null) {
             System.out.println("The transport cannot be null");
             return;
         }
 
-        transportsDisponibles.add(transport);
+        availableTransports.add(transport);
         System.out.println("Transport added: " + transport.getStatingPoint() + " → " +
                 transport.getEndPoint() + " (" + transport.getClass().getSimpleName() + ")");
     }
 
 
-    public void enregistrerUtilisateur(User utilisateur) {
-        if (utilisateur == null) {
+    public void saveUser(User user) {
+        if (user == null) {
             System.out.println("The user cannot be null");
             return;
         }
 
-        boolean emailExiste = utilisateurs.stream()
-                .anyMatch(u -> u.getEmail().equalsIgnoreCase(utilisateur.getEmail()));
+        boolean emailExist = users.stream()
+                .anyMatch(u -> u.getEmail().equalsIgnoreCase(user.getEmail()));
 
-        if (emailExiste) {
+        if (emailExist) {
             System.out.println("A user with this email already exists");
             return;
         }
 
-        utilisateurs.add(utilisateur);
+        users.add(user);
 
-        notificationManager.addObserver(utilisateur);
+        notificationManager.addObserver(user);
 
         Notification notifBienvenue = new Notification(
                 "Welcome to Kanoe!",
-                "Welcome " + utilisateur.getFirstName() + "! Your account has been successfully created.",
+                "Welcome " + user.getFirstName() + "! Your account has been successfully created.",
                 "INFO"
         );
-        notificationManager.notifyObserver(utilisateur, notifBienvenue);
+        notificationManager.notifyObserver(user, notifBienvenue);
 
-        System.out.println("User registered: " + utilisateur.getFirstName() + " " + utilisateur.getLastName() +
-                " (" + utilisateur.getEmail() + ")");
+        System.out.println("User registered: " + user.getFirstName() + " " + user.getLastName() +
+                " (" + user.getEmail() + ")");
     }
 
 
     // Getters
-    public List<Transport> getTransportsDisponibles() {
-        return new ArrayList<>(transportsDisponibles);
+    public List<Transport> getAvailableTransports() {
+        return new ArrayList<>(availableTransports);
     }
 
-    public List<Booking> getReservations() {
+    public List<Booking> getBookings() {
         return new ArrayList<>(bookings);
     }
 
-    public List<User> getUtilisateurs() {
-        return new ArrayList<>(utilisateurs);
+    public List<User> getUsers() {
+        return new ArrayList<>(users);
     }
 
     public NotificationManager getNotificationManager() {
