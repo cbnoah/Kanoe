@@ -1,13 +1,12 @@
 package main.java.fr.ynov.kanoe.main;
 
+import main.java.fr.ynov.kanoe.cli.GuestAccountCLI;
 import main.java.fr.ynov.kanoe.model.Avion;
 import main.java.fr.ynov.kanoe.model.Bus;
 import main.java.fr.ynov.kanoe.model.Train;
 import main.java.fr.ynov.kanoe.service.SystemeReservation;
 
 import java.time.LocalDateTime;
-
-import static main.java.fr.ynov.kanoe.cli.GuestAccountCLI.displayMainMenu;
 
 public class ApplicationRunner {
     public static void main(String[] args) {
@@ -54,6 +53,6 @@ public class ApplicationRunner {
                 .build());
 
         // Display the main menu
-        displayMainMenu(system);
+        new GuestAccountCLI(system).displayMainMenu();
     }
 }
