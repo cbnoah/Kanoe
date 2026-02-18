@@ -5,41 +5,47 @@ import main.java.fr.ynov.kanoe.service.SystemeReservation;
 
 import java.util.Scanner;
 
+import static main.java.fr.ynov.kanoe.utils.ScannerUtils.readInt;
+
 public class GuestAccountCLI {
-    public static void displayMainMenu(SystemeReservation system) {
-        Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
+    private final SystemeReservation system;
 
-        System.out.println("=== Main menu ===");
-        System.out.println("1. Login");
-        System.out.println("2. Sign in");
-        System.out.println("3. Show available transports");
-        System.out.println("4. Leave");
+    public GuestAccountCLI(SystemeReservation system) {
+        this.system = system;
+    }
 
-        System.out.print("Please select an option: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+    public void displayMainMenu() {
+        boolean running = true;
 
-        switch (choice) {
-            case 1 -> connectionToUser(system);
-            case 2 -> createAccount(system);
-            case 3 -> {
-                System.out.println("Available transports:");
-                for (int i = 0; i< system.getTransportsDisponibles().size(); i++)  {
-                    System.out.println(i+1 + " - " + system.getTransportsDisponibles().get(i));
+        while (running) {
+
+            System.out.println("=== Main menu ===");
+            System.out.println("1. Login");
+            System.out.println("2. Sign in");
+            System.out.println("3. Show available transports");
+            System.out.println("4. Leave");
+
+            System.out.print("Please select an option: ");
+            int choice = readInt("", scanner);
+
+            switch (choice) {
+                case 1 -> connectionToUser();
+                case 2 -> createAccount();
+                case 3 -> {
+                    System.out.println("Available transports:");
+                    for (int i = 0; i < system.getTransportsDisponibles().size(); i++) {
+                        System.out.println(i + 1 + " - " + system.getTransportsDisponibles().get(i));
+                    }
                 }
-                displayMainMenu(system);
-            }
-            case 4 -> System.exit(0);
-            default -> {
-                System.out.println("Invalid choice, please try again.");
-                displayMainMenu(system);
+                case 4 -> running = false;
+                default -> System.out.println("Invalid choice, please try again.");
             }
         }
 
-
     }
 
-    public static void connectionToUser(SystemeReservation system) {
+    public void connectionToUser() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your email: ");
         String email = scanner.nextLine();
@@ -54,10 +60,9 @@ public class GuestAccountCLI {
             }
         }
         System.out.println("Invalid email or password. Please try again.");
-        displayMainMenu(system);
     }
 
-    public static void createAccount(SystemeReservation system) {
+    public void createAccount() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your last name: ");
         String lastName = scanner.nextLine();
