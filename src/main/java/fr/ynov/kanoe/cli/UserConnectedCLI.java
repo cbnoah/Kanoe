@@ -162,10 +162,10 @@ public class UserConnectedCLI {
         System.out.println("3. Bank transfer");
         int choice = readInt("", scanner);
         return switch (choice) {
-            case 2 -> MethodPayment.DEBIT_CARD;
-            case 3 -> MethodPayment.PAYPAL;
-            case 4 -> MethodPayment.BANK_TRANSFER;
-            default -> MethodPayment.CREDIT_CARD;
+            case 2 -> paymentMethod.DEBIT_CARD;
+            case 3 -> paymentMethod.PAYPAL;
+            case 4 -> paymentMethod.BANK_TRANSFER;
+            default -> paymentMethod.CREDIT_CARD;
         };
     }
 }
