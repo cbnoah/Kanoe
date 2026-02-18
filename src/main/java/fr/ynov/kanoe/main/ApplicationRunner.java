@@ -1,19 +1,19 @@
 package main.java.fr.ynov.kanoe.main;
 
 import main.java.fr.ynov.kanoe.cli.GuestAccountCLI;
-import main.java.fr.ynov.kanoe.model.Avion;
+import main.java.fr.ynov.kanoe.model.Plane;
 import main.java.fr.ynov.kanoe.model.Bus;
 import main.java.fr.ynov.kanoe.model.Train;
-import main.java.fr.ynov.kanoe.model.Users;
-import main.java.fr.ynov.kanoe.service.SystemeReservation;
+import main.java.fr.ynov.kanoe.model.User;
+import main.java.fr.ynov.kanoe.service.BookingSystem;
 
 import java.time.LocalDateTime;
 
 public class ApplicationRunner {
     public static void main(String[] args) {
-        SystemeReservation system = new SystemeReservation();
+        BookingSystem system = new BookingSystem();
         // Creating some dummy data for testing
-        system.ajouterTransport(new Avion.Builder()
+        system.ajouterTransport(new Plane.Builder()
                 .setId("AV001")
                 .setOperator("Air France")
                 .setStatingPoint("Paris")
@@ -53,7 +53,7 @@ public class ApplicationRunner {
                 .setAirConditioning(true)
                 .build());
 
-        system.enregistrerUtilisateur(new Users("Doe", "John", "a", "0123456879", "a", system.getUtilisateurs().size()));
+        system.enregistrerUtilisateur(new User("Doe", "John", "a", "0123456879", "a", system.getUtilisateurs().size()));
 
         // Display the main menu
         new GuestAccountCLI(system).displayMainMenu();
