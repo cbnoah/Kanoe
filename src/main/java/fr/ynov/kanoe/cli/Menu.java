@@ -24,7 +24,9 @@ public class Menu {
             case 2 -> createAccount(system);
             case 3 -> {
                 System.out.println("Available transports:");
-                system.getTransportsDisponibles().forEach(System.out::println);
+                for (int i = 0; i< system.getTransportsDisponibles().size(); i++)  {
+                    System.out.println(i+1 + " - " + system.getTransportsDisponibles().get(i));
+                }
                 displayMainMenu(system);
             }
             case 4 -> System.exit(0);
